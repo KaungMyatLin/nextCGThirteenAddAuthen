@@ -19,10 +19,10 @@ export default NextAuth({
                     client.close();
                     throw new Error('No user found')
                 }
-
-                const isSamePw = pwCanbeSameHarsh(credentials.password, user.password)
+                const isSamePw = await pwCanbeSameHarsh(credentials.password, user.password)
                 if (!isSamePw) {
-                    throw new Error('Could not log you in')
+                    client.close();
+                    throw new Error('Invalid password! Try again!');
                 }
                 client.close();
                 return {email: user.email}       // return obj to let authorize know succeeded!.

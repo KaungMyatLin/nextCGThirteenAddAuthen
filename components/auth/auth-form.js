@@ -31,7 +31,6 @@ function AuthForm() {
 
   async function submHdl (e) {
     e.preventDefault();
-    console.log(emInpRef);
     const entEm = emInpRef.current.value;
     const entPw = pwInpRef.current.value;
 
