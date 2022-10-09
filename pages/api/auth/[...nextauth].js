@@ -1,18 +1,31 @@
 import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
-import connectToDb from '../../../lib_common/db';
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { pwCanbeSameHarsh } from '../../../lib_common/auth';
+import connectToMongoClient from '../../../lib_common/db';
 
 export default NextAuth({
+    session: {
+        strategy: "jwt",       // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+    },
     providers: [
-        Providers.Credentials({
+        CredentialsProvider({
+            name: "Credentials",
             async authorize(credentials) {
-                const client = await connectToDb();
+                console.log('credentials= ', credentials)
+                const client = await connectToMongoClient();
                 const users = client.db().collection('users')
-                const user = users.findOne({email: credentials.email})
+                const user = await users.findOne({email: credentials.email})
                 if (!user) {
+                    client.close();
                     throw new Error('No user found')
                 }
+
+                const isSamePw = pwCanbeSameHarsh(credentials.password, user.password)
+                if (!isSamePw) {
+                    throw new Error('Could not log you in')
+                }
                 client.close();
+                return {email: user.email}       // return obj to let authorize know succeeded!.
             }
         })
     ]

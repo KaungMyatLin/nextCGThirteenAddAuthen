@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import classes from './auth-form.module.css';
+import { signIn } from 'next-auth/react'
 
 const createUser = async (em, pw) => {
   const resp = await fetch('/api/auth/signup', {
@@ -30,13 +31,22 @@ function AuthForm() {
 
   async function submHdl (e) {
     e.preventDefault();
+    console.log(emInpRef);
+    const entEm = emInpRef.current.value;
+    const entPw = pwInpRef.current.value;
 
     if (isLogin) {
+      const result = await signIn('credentials', {
+        redirect: false
+        , email: entEm
+        , password: entPw
+      }) //will always resolve, will not reject even if there's error in api backend.
 
+      console.log(result)
     }
     else {
       try {
-        const result_cUser = await createUser(emInpRef.current.value, pwInpRef.current.value);
+        const result_cUser = await createUser(entEm, entPw);
         console.log(result_cUser)
       } catch (err) {
         console.log(err)
