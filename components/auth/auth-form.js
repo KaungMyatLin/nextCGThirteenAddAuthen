@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import classes from './auth-form.module.css';
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const createUser = async (em, pw) => {
   const resp = await fetch('/api/auth/signup', {
@@ -24,6 +25,7 @@ function AuthForm() {
   const emInpRef = useRef();
   const pwInpRef = useRef();
   const [isLogin, setIsLogin] = useState(true);
+  const router = useRouter();
 
   function switchAuthModeHandler() {
     setIsLogin((prevState) => !prevState);
@@ -40,8 +42,10 @@ function AuthForm() {
         , email: entEm
         , password: entPw
       }) //will always resolve, will not reject even if there's error in api backend.
-
       console.log(result)
+      if (!result.error) {
+        router.replace("/profile")
+      }
     }
     else {
       try {

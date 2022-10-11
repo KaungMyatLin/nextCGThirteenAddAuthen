@@ -11,12 +11,12 @@ export async function getServerSideProps(context) {
   console.log("ProfilePage:11 sessionObj=")
   console.log(sessionObj)
   if (!sessionObj) {
-    // return {
-    //   redirect: {
-    //     destination: '/auth',
-    //     permanent: false,       // if only times session is not loggedin.
-    //   }
-    // }
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,       // if only times session is not loggedin.
+      }
+    }
   }
   const jsonStr = JSON.stringify(sessionObj)
   const converted_sessObj = JSON.parse(jsonStr)
