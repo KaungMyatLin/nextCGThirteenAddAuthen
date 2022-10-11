@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { pwCanbeSameHarsh } from '../../../lib_common/auth';
 import connectToMongoClient from '../../../lib_common/db';
 
-export default NextAuth({
+export const authOptions = {
     session: {
         strategy: "jwt",       // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
     },
@@ -29,4 +29,6 @@ export default NextAuth({
             }
         })
     ]
-});
+}
+
+export default NextAuth(authOptions);
