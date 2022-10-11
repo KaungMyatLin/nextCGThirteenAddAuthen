@@ -2,7 +2,7 @@ import UserProfile from '../components/profile/user-profile';
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from "./api/auth/[...nextauth]"
 
-function ProfilePage(props) {
+function ProfilePage() {
   return <UserProfile />;
 }
 // adding serversidepage guard.

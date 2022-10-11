@@ -7,6 +7,7 @@ import classes from '../components/profile/user-profile.module.css';
 function AuthPage() {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter();
+  // clientside Session checking for /auth.
   useEffect( () => {
     getSession().then(sessionObj => {
       console.log("AuthPage:11 sessionObj=")
