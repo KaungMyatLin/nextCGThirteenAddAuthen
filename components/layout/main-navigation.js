@@ -4,9 +4,9 @@ import classes from './main-navigation.module.css';
 
 function MainNavigation() {
   const { data: sessionD , status } = useSession()
-  console.log("sessionD=");
+  console.log("MainNavigation:7 sessionD=");
   console.log(sessionD);
-  console.log("status=");
+  console.log("MainNavigation:9 status=");
   console.log(status);
 
   const logoutHld = () => {

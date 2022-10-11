@@ -11,7 +11,7 @@ export default NextAuth({
         CredentialsProvider({
             name: "Credentials",
             async authorize(credentials) {
-                console.log('credentials= ', credentials)
+                console.log('[...nextauth].js:14 credentials= ', credentials)
                 const client = await connectToMongoClient();
                 const users = client.db().collection('users')
                 const user = await users.findOne({email: credentials.email})
