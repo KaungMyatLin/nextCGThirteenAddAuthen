@@ -1,13 +1,14 @@
 import { unstable_getServerSession } from 'next-auth/next'
 import { pwCanbeSameHarsh, c_hashPw } from '../../../lib_common/auth';
 import connectToMongoClient from '../../../lib_common/db';
+import { authOptions } from "../auth/[...nextauth]"
 
 const chgPwHdl = async (req, res) => {
     if (req.method !== "PATCH") {
         return;
     }
     // serverside Session checking for /auth changepw restapi.
-    const sessionObj = await unstable_getServerSession(context.req, context.res, authOptions) // unstable_getServerSession is experimental, no alternative in v4.
+    const sessionObj = await unstable_getServerSession(req, res, authOptions) // unstable_getServerSession is experimental, no alternative in v4.
     console.log("chgPwHdl:11 sessionObj=")
     console.log(sessionObj)
     if (!sessionObj) {
@@ -37,8 +38,10 @@ const chgPwHdl = async (req, res) => {
     }
 
     const hashDigest = await c_hashPw(newPw);
-    const result = await users.updateOne({email: r_em_SessionObj}, {$set: {password: newPw}})
+    const result = await users.updateOne({email: r_em_SessionObj}, {$set: {password: hashDigest}})
     client.close();
+    console.log("chngPw:42 result=")
+    console.log(result)
     res.status(200).json({message: `password has been successfully changed!`})
 }
 

@@ -30,11 +30,23 @@ function UserProfile() {
   // if ( status === "loading" ) {
   //   return <p className={classes.profile}>Loading ...</p>
   // }
+  const chngPwHdl = async (oldxnewPasswords) => {
+    const resp = await fetch('/api/user/change-password', {
+      method: 'PATCH'
+      , body: JSON.stringify(oldxnewPasswords)
+      , headers: {
+        'content-type': 'application/json'
+      }
+    })
+    const d = await resp.text();
+
+    console.log(d)
+  }
 
   return (
     <section className={classes.profile}>
       <h1>Your User Profile</h1>
-      <ProfileForm />
+      <ProfileForm onChngPw={chngPwHdl}/>
     </section>
   );
 }
